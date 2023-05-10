@@ -58,9 +58,11 @@ BOT = discord.Client(intents=discord.Intents.default())
 
 
 @BOT.event
-async def on_message(message):
-    title, search_string = message.content.split(maxsplit=1)
-    await message.channel.send(find_first_appearance(title, search_string))
+async def on_message(message: discord.Message):
+    if not message.author.bot:
+        await message.reply("Приступаю к поиску")
+        title, search_string = message.content.split(maxsplit=1)
+        await message.reply(find_first_appearance(title, search_string))
 
 
 if __name__ == "__main__":
