@@ -47,7 +47,7 @@ def search_in_old_versions(title: str, search_string: str, oldids: List[int]) ->
 
 
 def find_first_appearance(title: str, search_string: str) -> str:
-    title = quote(title.encode("cp1251"))
+    title = quote(title.encode("utf8"))
     url = f"https://station14.ru/index.php?title={title}&offset=&limit=500&action=history"
     html = scrape_from_site(url)
     oldids = parse_history_for_oldids(html)
