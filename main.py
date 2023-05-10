@@ -69,5 +69,3 @@ if __name__ == "__main__":
     loop = get_event_loop()
     loop.create_task(BOT.start(TOKEN))
     loop.run_forever()
-
-
