@@ -2,6 +2,13 @@ from urllib.request import urlopen, Request
 from urllib.parse import quote
 import re
 from typing import List
+from json import load
+from asyncio import get_event_loop
+import discord
+
+
+with open("tokens.json", encoding="utf-8") as FILE:
+    TOKEN = load(FILE)["discord"][0]
 
 
 def scrape_from_site(url: str) -> str:
@@ -45,3 +52,20 @@ def find_first_appearance(title: str, search_string: str) -> str:
     html = scrape_from_site(url)
     oldids = parse_history_for_oldids(html)
     return search_in_old_versions(title, search_string, oldids)
+
+
+BOT = discord.Client(intents=discord.Intents.default())
+
+
+@BOT.event
+async def on_message(message):
+    title, search_string = message.content.split(maxsplit=1)
+    await message.channel.send(find_first_appearance(title, search_string))
+
+
+if __name__ == "__main__":
+    loop = get_event_loop()
+    loop.create_task(BOT.start(TOKEN))
+    loop.run_forever()
+
+
